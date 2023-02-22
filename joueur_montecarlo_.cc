@@ -34,31 +34,28 @@ Joueur_MonteCarlo_::Joueur_MonteCarlo_(std::string nom, bool joueur)
     //faire dérouler l'arbre
 
 //        // Création du nœud racine de l'arbre
-//        Node * racine = new Node(j);
+       // Node racine(j);
 
-//        // Lancement de la boucle de recherche
-//        for (int i = 0; i < nb_iterations_; i++) {
-//            // Sélection du meilleur nœud
-//            Node * meilleur_noeud = selection(racine);
+        // Lancement de la boucle de recherche
+//         for (int i = 0; i < nb_iterations_; i++) {
+//             // Sélection du meilleur nœud
+//             Node meilleur_noeud = selection(racine);
 
-//            // Expansion du meilleur nœud
-//            Node * nouveau_noeud = expansion(meilleur_noeud);
+//             // Expansion du meilleur nœud
+//             Node nouveau_noeud = expansion(meilleur_noeud);
 
-//            // Simulation à partir du nouveau nœud
-//            int resultat_simulation = simulation(nouveau_noeud);
+//             // Simulation à partir du nouveau nœud
+//             int resultat_simulation = simulation(nouveau_noeud);
 
-//            // update du résultat de la simulation
-//            update(nouveau_noeud, resultat_simulation);
-//        }
+//             // update du résultat de la simulation
+//             update(nouveau_noeud, resultat_simulation);
+//         }
 
-//        // Recherche du meilleur coup à jouer
-//        coup = meilleur_coup(racine);
+//         // Recherche du meilleur coup à jouer
+//         coup = meilleur_coup(racine);
 
-//        // Libération de la mémoire allouée aux nœuds de l'arbre
-//        delete_arbre(racine);
-//    }
+//     }
 
-//}
 
 
 
