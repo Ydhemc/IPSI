@@ -21,7 +21,7 @@ public:
     std::vector<Node> _enfant; //vecteur de noeuds enfNode(const Jeu & jeu, std::vector<Node> const & enfant, int numcoup)ant
 
     Node(const Node &)= delete; //interdit la copie
-    Node(const Jeu & jeu, const courant & j);  //constructeur qui initialise le jeu en début de partie
+    Node(const courant & j);  //constructeur qui initialise le jeu en début de partie
     Node(std::vector<Node> const & enfant, int nbsim, int score, int nbcoups,int numcoup); //constructeur pour le déroulement de la partie
 
 };
