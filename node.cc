@@ -2,7 +2,7 @@
 
 Node::Node(const Jeu & jeu, const courant & j): _nbsim(0), _score(0), _jeu(jeu), _j(j) { }
 
-Node::Node(const Jeu & jeu, std::vector<Node> const & enfant, int numcoup): _score(0), _nbsim(0), _enfant(enfant)  {
+Node::Node(std::vector<Node> const & enfant, int nbsim, int score, int nbcoups,int numcoup): _score(score), _nbsim(nbsim), _nbcoups(nbcoups), _enfant(enfant) {
 
 
 //    _player = _game.getCurrentPlayer();
