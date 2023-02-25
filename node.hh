@@ -5,7 +5,7 @@
 #include "joueur_montecarlo_.hh"
 
 enum class courant {
-    adversaire, avengers
+    premier, deuxième
 };
 
 
