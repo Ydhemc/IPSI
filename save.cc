@@ -1,4 +1,5 @@
 #include "save.hh"
+#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <algorithm>
@@ -62,7 +63,7 @@ Node save::import(std::string fichier)
         file>> nbsim;
         //curseur normalement sur la deuxième ligne
         //lecture et deplacement du curseur dans noeux
-        noeux(file);
+        Racine=noeux(file);
     }
 
     return Racine;
@@ -70,7 +71,8 @@ Node save::import(std::string fichier)
 
 void save::exporter(Node arbre, std::string fichier)
 {
-    std::ofstream file("../outputs/" + fichier + ".txt");
+    std::string const monficher(fichier+".txt");
+    std::ofstream file(monficher.c_str());
 
     if(file) {
         //entête
@@ -81,9 +83,4 @@ void save::exporter(Node arbre, std::string fichier)
         // autrement enfant
         noeux(file, arbre);
     }
-    else {
-        std::cout<< "ERREUR"<<std::endl;
-    }
 }
-
-
