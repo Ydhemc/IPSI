@@ -1,3 +1,4 @@
+ 
 #include "node.hh"
 
 Node::Node(): _x(0), _y(0), _j(courant::premier), _score(0), _nbsim(0), _nbcoups(0), _enfant({}) {}
@@ -25,15 +26,20 @@ void Node::ajouter_enfant(const Node &enfant) {
     _enfant.push_back(enfant);
 }
 
+Node Node::meilleur_enfant()
+{ std::size_t j=0;
+  float max=qubc(_enfant.at(0));
+  for(std::size_t i(1);i<_enfant.size();++i){
+      if (qubc(_enfant.at(i))>max){
+          max=qubc(_enfant.at(i));
+          j=i;
+      }
+  }
+  return _enfant.at(j);
 
-//Node & Node::selection(Node const & n) {
+}
+float Node::qubc(const Node &n) {
+   return _score/_nbsim+tabln[nb_simulations_total-1][_nbsim-1];//Il faudra traiter le cas où le total de simulations et le nombre de sim du noeud courant sont nuls
+    }
 
-//    while (!n.est_terminal()) {
-//        if (n._enfant.empty()) {
-//            return n.expansion();  // la fonction expansion() à implémenter
-//        } else {
-//            n = n.meilleur_enfant(); //meilleur_enfant() à implémenter en utilisant le qubc
-//        }
-//    }
-//    return n;
-//}
+
