@@ -61,15 +61,14 @@ Joueur_MonteCarlo_::Joueur_MonteCarlo_(std::string nom, bool joueur)
 
 //fonction selection: sélectionne le prochain nœud à explorer en parcourant l'arbre en fonction du QUBC jusqu'à atteindre un nœud feuille.
 
-Node Joueur_MonteCarlo_::selection(Node noeud)
+Node & Joueur_MonteCarlo_::selection(Node n) const
 {
-    while (!noeud.est_feuille()) {
-        if (noeud.tous_les_enfants_visites()) {
-            noeud = noeud.qubc();
+    while (!n.est_terminal()) {
+            if (n._enfant.empty()) {
+                return n.expansion();
+            } else {
+                n = n.meilleur_enfant(); //meilleur_enfant() implémentée dans node.hh
+            }
         }
-        else {
-            return expansion(noeud);
-        }
-    }
-    return noeud;
+        return n;
 }
