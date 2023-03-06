@@ -52,6 +52,7 @@ public:
    Node meilleur_enfant();
    Node & selection(Node const & n); //selectionne le meilleur enfant
    Node & expansion();
+   void fusionnerArbres(Node *,Node *);
 
 };
 
