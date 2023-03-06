@@ -22,7 +22,7 @@ public:
   //------------- nouvelles fonctions ---------------
 
 
-  Node selection(Node noeud);
+  Node & selection(Node n) const;
   Node expansion(Node noeud);
   int simulation(Node noeud);
   couple meilleur_coup(Node noeud);
