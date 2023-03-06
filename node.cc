@@ -44,25 +44,31 @@ float Node::qubc(const Node &n) {
    return _score/_nbsim+tabln[nb_simulations_total-1][_nbsim-1];//Il faudra traiter le cas où le total de simulations et le nombre de sim du noeud courant sont nuls
     }
 
-void Node::fusionnerArbres(Node* arbre1, Node* arbre2)//Le résultat se retrouve alors dans arbre1
+Node *Node::fusionnerArbres(Node* arbre1, Node* arbre2,Node * resultat)
 {
-    if (!arbre1 || !arbre2) { // si l'un des arbres est vide, il n'y a rien à faire
-        return;
+    if (!arbre1){
+        resultat = arbre2;// si l'un des arbres est vide, il n'y a rien à faire
+        return resultat;
+    }
+    else if(!arbre2){
+        resultat = arbre1;
+        return resultat;
     }
 
-    arbre1->_score = arbre1->_score + arbre2->_score;
-    arbre1->_nbsim += arbre2->_nbsim;
-    arbre1->_nbcoups=arbre2->_nbcoups;
+    resultat->_score = arbre1->_score + arbre2->_score;
+    resultat->_nbsim = arbre2->_nbsim+arbre1->_nbsim;
+    resultat->_nbcoups=arbre1->_nbcoups;
 
     for (std::size_t i = 0; i < arbre2->_enfant.size(); i++) {
         for (std::size_t j = 0; j < arbre1->_enfant.size(); j++) {
             if (arbre2->_enfant[i]._x != arbre1->_enfant[j]._x && arbre2->_enfant[i]._y != arbre1->_enfant[j]._y) {
-                 arbre1->_enfant.push_back(arbre2->_enfant[i]);
+                 resultat->_enfant.push_back(arbre2->_enfant[i]);
             }
        else {
-            fusionnerArbres(&arbre1->_enfant[j],&arbre2->_enfant[i]);
+            fusionnerArbres(&arbre1->_enfant[j],&arbre2->_enfant[i],resultat);
         }
     }
 }
+    return resultat;
 }
 
