@@ -1,36 +1,63 @@
 #pragma once
 
-#include"jeu.hh"
-#include"joueurs/joueur_montecarlo_.hh"
-#include"arbitre.hh"
-#include"joueurs/node.hh"
+#include"../jeu.hh"
+
+#include "joueur.hh"
+#include "joueur_random.hh"
+#include "joueur_manuel.hh"
+#include "joueur_montecarlo_.hh"
+#include "joueur_alphabeta.hh"
+
+#include"joueur_montecarlo_.hh"
+#include"node.hh"
+
+
 class apprentissage{
-    int resultat(result r){
-    switch(r){
-    case result::P1:return 1;break;
-    case result::P2 :return -1;break;
-    case result::ERREUR :return -10;break;
-    case result::NULLE  :return 0;break;
+private:
+    std::shared_ptr<Joueur> _joueur1;
+    std::shared_ptr<Joueur> _joueur2;
 
-    }
-    };
+    Jeu _jeu;
+    std::vector<couple> _coups;
 
-    void updatev2(std::vector<Node> v,Node root,int r){
-    int j(0);
-       if(!v.empty())
-      while (root._enfant.at(j)._x !=v.at(0)._x && root._enfant.at(j)._y != v.at(0)._y) {
-        ++j;
-        }
+    std::vector<std::mutex> _coups_mutex;
 
-        root._enfant.at(j)._nbsim++;
-        root._enfant.at(j)._score =+ r;
-        //updatev2(v.erase(0),root._enfant.at(j),r);
-        v.erase(v.begin());
-            if (!v.empty()) {
-                updatev2(v, root._enfant.at(j), r);
-            }
+    int _nombre_parties;
+    int _numero_partie;
 
-      }
+    player _player1;
+    player _player2;
+
+    Node _n;
+
+public:
+    //relié à l'abre de notre monte carlo
+    apprentissage(player player1 , player player2, int nombre_parties, Node n);
+
+
+    void initialisation();
+    /**
+     * @brief challenge
+     * @param nombre_parties
+     * methode lançant un challenge avec un nombre de parties
+     * affiche le nombre de parties gagnées pour chaque participant
+     * @return 0 si tout c'est bien passé, 1 sinon
+     */
+    int challenge();
+
+    /**
+     * @brief partie
+     * @return le gagnant de la partie (result::1 pour le joueur 1, result::2 pour joueur 2, result::NULLE en cas de partie nulle, result::ERREUR en cas de problème)
+     * lance une partie,
+     *
+     */
+    std::pair<result,std::vector<couple>> partie();
+
+
+
+    int resultat(result r);
+
+    void updatev2(std::vector<couple> v,Node &root,int r);
 
 
 };
