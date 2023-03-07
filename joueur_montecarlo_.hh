@@ -1,34 +1,37 @@
 #pragma once
 
+
 #include "joueur.hh"
 #include "node.hh"
 
-#include<vector>
-#include<memory>
-
-
+#include "vector"
+#include "memory"
 
 class Joueur_MonteCarlo_ : public Joueur
 {
 public:
-  Joueur_MonteCarlo_(std::string nom, bool joueur);
+
+    Node _Root;
+    Node _deroule;
+    Jeu _j;
+
+    Joueur_MonteCarlo_(std::string nom, bool joueur);
 
 
-  void recherche_coup(Jeu j, couple & coup) override;
-
- // couple random(Jeu j, couple &coup) //nouvelle fonction qui choisit un coup aléatoire
+    void recherche_coup(Jeu j, couple & coup) override;
 
 
-  //------------- nouvelles fonctions ---------------
+  // couple random(Jeu j, couple &coup) //nouvelle fonction qui choisit un coup aléatoire
 
 
-  Node & selection(Node n) const;
-  Node expansion(Node noeud);
-  int simulation(Node noeud);
-  couple meilleur_coup(Node noeud);
+   //------------- nouvelles fonctions ---------------
+
+
+   Node selection(Node n) const;
+   Node expansion(Node noeud);
+   int simulation(Node noeud);
+   couple meilleur_coup(Node noeud);
+
 
 
 };
-
-
-

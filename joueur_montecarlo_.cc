@@ -1,10 +1,82 @@
 #include "joueur_montecarlo_.hh"
-#include "node.hh"
-
+#include "save.hh"
 
 Joueur_MonteCarlo_::Joueur_MonteCarlo_(std::string nom, bool joueur)
-    :Joueur(nom,joueur)
-{}
+    :Joueur(nom,joueur), _j(Jeu(11))
+{
+    save s;
+    _Root=s.import("arbre.txt");
+    _deroule=_Root;
+}
+
+
+
+void Joueur_MonteCarlo_::recherche_coup(Jeu j, couple &coup)
+{
+    //pour l'apprentissage
+    //le jours du tournoi il sera peut être plus preferable de visité d'abord les noeuds qui amèene à la victoire puis les noeuds egalité puis joué aléatoirement
+    //parcours l'arbre si noeud non visité on le prend
+    //autrement qubc /meilleur coups / meilleur enfant
+    //
+    //si le nombre de coups possible est supérieur au nombre de coups possible de l'arbe alors on est dans une nouvelle partie donc _deroule=_root
+    //cas pour si on joue en premiers, implementé si on est second
+
+
+    /* en reflexion
+    if(static_cast<int>(j.coups_possibles().size())>_deroule._nbcoups)
+        _deroule=_Root;
+    */
+
+
+    //chercher le coups de l'adversaire
+    //utiliser _jeu.coupspossibles et j.coupspossibles et trouver celui qui n'est plus dans le nouveau
+    std::vector<couple> c(j.coups_possibles());
+    if(!_deroule._enfant.empty()){
+        if(c.size()>_deroule._enfant.size()){
+            //y a des coups possibles non visité
+            std::vector<couple>::size_type i(0);
+            bool test(true);
+            //on cherche si le coups est dans le vector enfant
+            while(i<c.size() && test){
+                bool test2(false);
+               for(std::vector<Node>::const_iterator x(_deroule._enfant.begin()); x!=_deroule._enfant.end(); ++x){
+                    if(x->_x==c.at(i).first ||  x->_y==c.at(i).second){
+                        test2=true;
+                    }
+               }
+               //si pas trouver alors le coups n'a pas encore été chercher
+               //donc on sort du while
+               if(!test2) test=false;
+               else //autrement (si trouver) on incremente, pour passer à la valeur suivante
+                   i++;
+            }
+            coup.first=c.at(i).first;
+            coup.second=c.at(i).second;
+            //var temp pour deroulé par la suite la fonction aleatoire (on crée un feuille pour evité de rentré dans le if)
+            Node N;
+            N._nbcoups=j.coups_possibles().size();
+            _deroule=N;
+        }
+        //tout à déja été visité donc qubc
+        else {
+            int M=_deroule.meilleur_coup();
+            coup.first=_deroule._enfant.at(M)._x;
+            coup.second=_deroule._enfant.at(M)._y;
+            //on se place maintenant sur notre derniers coups, la prochaine recherche de coups
+            _deroule=_deroule._enfant.at(M);
+        }
+    }
+    //pas un sous arbre déjà ouvert donc on devient random
+    else {
+        int taille = j.coups_possibles().size();
+        int num = rand()%(taille);
+        coup.first=j.coups_possibles()[num].first;
+        coup.second=j.coups_possibles()[num].second;
+    }
+
+    //pour la prochaine iteration
+    _j=j;
+}
 
 
 //couple Joueur_MonteCarlo_::random(Jeu j, couple &coup)
@@ -61,7 +133,7 @@ Joueur_MonteCarlo_::Joueur_MonteCarlo_(std::string nom, bool joueur)
 
 //fonction selection: sélectionne le prochain nœud à explorer en parcourant l'arbre en fonction du QUBC jusqu'à atteindre un nœud feuille.
 
-Node & Joueur_MonteCarlo_::selection(Node n) const
+Node Joueur_MonteCarlo_::selection(Node n) const
 {
     while (!n.est_terminal()) {
             if (n._enfant.empty()) {
@@ -72,3 +144,4 @@ Node & Joueur_MonteCarlo_::selection(Node n) const
         }
         return n;
 }
+
