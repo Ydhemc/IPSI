@@ -29,7 +29,6 @@ float tabln[12][11] = {
 class Node
 {
 public:
-     static int nb_simulations_total;//A incrémenter à chaque expansion.Sans cela on ne pourra pas calculer le qubc
    int _x;
    int _y;
    courant _j; //joueur courant
