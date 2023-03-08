@@ -237,6 +237,7 @@ int apprentissage::resultat(result r)
 
         }
     }
+    return 0;
 }
 
 void apprentissage::updatev2(std::vector<couple> v, Node &root, int r)
@@ -248,11 +249,15 @@ void apprentissage::updatev2(std::vector<couple> v, Node &root, int r)
         ++j;
         }
       //si le noeud n'a pas été trouver donc n'existe pas alors on le créé
-      if(j==-1){
+      if(j==(int)root._enfant.size() && ( root._enfant.at(j)._x !=v.at(0).first && root._enfant.at(j)._y != v.at(0).second) ){
         Node n;
         n._x=v.at(0).first;
         n._y=v.at(0).second;
         n._nbcoups=root._enfant.at(0)._nbcoups;
+        if(root._j==courant::premier)
+            n._j=courant::deuxième;
+        else
+            n._j=courant::premier;
         n._score=r;
         n._nbsim++;
         //pas besoin de continuer car on crée un nouveau noeud par update
