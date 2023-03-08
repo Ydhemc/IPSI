@@ -30,7 +30,36 @@ void Joueur_MonteCarlo_::recherche_coup(Jeu j, couple &coup)
 
     //chercher le coups de l'adversaire
     //utiliser _jeu.coupspossibles et j.coupspossibles et trouver celui qui n'est plus dans le nouveau
+    int it(-1);
+    std::vector<couple> jeuav(_j.coups_possibles());
     std::vector<couple> c(j.coups_possibles());
+    if(jeuav.size()>c.size()){
+        for(std::vector<couple>::size_type x(0); x<jeuav.size();++x){
+            bool test(false);
+            for( auto y:c){
+                if(jeuav[x].first==y.first && jeuav[x].second==y.second)
+                    test=true;
+            }
+            if(!test)
+                it=x;
+        }
+        //on se place au bonne endroit dans notre arbre
+        if(!_deroule._enfant.empty()){
+            int pos(0);
+            while (_deroule._enfant.at(pos)._x !=jeuav.at(it).first && _deroule._enfant.at(pos)._y != jeuav.at(0).second){
+              ++pos;
+              }
+            //si le noeud a été trouver
+            if(pos==(int)_deroule._enfant.size() && ( _deroule._enfant.at(pos)._x==jeuav.at(it).first && _deroule._enfant.at(pos)._y == jeuav.at(0).second) ){
+              _deroule=_deroule._enfant.at(pos);
+            }
+            else {
+                Node n;
+                _deroule=n;
+            }
+        }
+    }
+
     if(!_deroule._enfant.empty()){
         if(c.size()>_deroule._enfant.size()){
             //y a des coups possibles non visité
@@ -66,7 +95,7 @@ void Joueur_MonteCarlo_::recherche_coup(Jeu j, couple &coup)
             _deroule=_deroule._enfant.at(M);
         }
     }
-    //pas un sous arbre déjà ouvert donc on devient random
+    //un sous arbre jamais visité donc on devient random
     else {
         int taille = j.coups_possibles().size();
         int num = rand()%(taille);
