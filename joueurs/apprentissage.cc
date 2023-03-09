@@ -293,5 +293,7 @@ void apprentissage::updatev2(std::vector<couple> v, Node &root, int r)
             root.ajouter_enfant(n);
         }
     }
+    root._nbsim++;
+    root._score+=r;
 
 }
