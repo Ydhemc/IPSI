@@ -1,6 +1,6 @@
 #include "apprentissage.hh"
 
-apprentissage::apprentissage(player player1, player player2, int nombre_parties, Node n):
+apprentissage::apprentissage(player player1, player player2, int nombre_parties, Node &n):
 _jeu(11),
 _coups(nombre_parties),
 _coups_mutex(nombre_parties),
@@ -84,7 +84,7 @@ void apprentissage::initialisation()
 }
 
 
-int apprentissage::challenge()
+Node apprentissage::challenge()
 {
     initialisation(); // Au moins une fois pour que les objets de la ligne qui suit soient définis
     std::cout << "Le challenge de " << _nombre_parties << " parties "
@@ -102,7 +102,7 @@ int apprentissage::challenge()
             if (resultat.first == result::ERREUR)
                 {
                     std::cerr << "Alerte bug. Sauvez votre terminal et prévenez Me Devred. Merci. " << std::endl;
-                    return 1;
+                    return _n;
                 } else if (resultat.first != result::NULLE)
                       (resultat.first==result::P1?
                         ((_numero_partie%2)?
@@ -126,7 +126,7 @@ int apprentissage::challenge()
     std::cout << "FIN DU CHALLENGE\n\t"
               << _joueur1->nom()<< " gagne " << ((_numero_partie%2)? victoire_joueur_1 : victoire_joueur_2)
               << "\n\t"<< _joueur2->nom()<< " gagne " << ((_numero_partie%2) ? victoire_joueur_2 : victoire_joueur_1) << std::endl;
-    return 0;
+    return _n;
 }
 
 
@@ -191,6 +191,10 @@ std::pair<result,std::vector<couple>> apprentissage::partie()
                       << std::endl << _jeu << std::endl
                          ;
             //on stock le coups à jouer
+            couple cou;
+            cou.first=_coups[_numero_partie-1].first;
+            cou.second=_coups[_numero_partie-1].second;
+            c.push_back(cou);
         }
 
 
@@ -242,34 +246,54 @@ int apprentissage::resultat(result r)
 
 void apprentissage::updatev2(std::vector<couple> v, Node &root, int r)
 {
-    int j(-1);
+    int j(0);
     if(!v.empty()){
     //cherche la branche qui à été visité
-      while (root._enfant.at(j)._x !=v.at(0).first && root._enfant.at(j)._y != v.at(0).second){
-        ++j;
+        if(!root._enfant.empty()){
+              while ((j<(int)root._enfant.size()) && (root._enfant.at(j)._x !=v.at(0).first && root._enfant.at(j)._y != v.at(0).second)){
+                ++j;
+                }
+              //si le noeud n'a pas été trouver donc n'existe pas alors on le créé
+              if(j>=(int)root._enfant.size() || (j==(int)root._enfant.size() && ( root._enfant.at(j)._x !=v.at(0).first && root._enfant.at(j)._y != v.at(0).second) )){
+                Node n;
+                n._x=v.at(0).first;
+                n._y=v.at(0).second;
+                n._nbcoups=root._enfant.at(0)._nbcoups;
+                if(root._j==courant::premier)
+                    n._j=courant::deuxième;
+                else
+                    n._j=courant::premier;
+                n._score=r;
+                n._nbsim++;
+                root.ajouter_enfant(n);
+                //pas besoin de continuer car on crée un nouveau noeud par update
+
+              }
+              else {
+                root._enfant.at(j)._nbsim++;
+                root._enfant.at(j)._score += r;
+
+                v.erase(v.begin());
+
+                //rapelle de la fonction pour la continuer la descente de l'arbre
+                updatev2(v, root._enfant.at(j), r);
+              }
         }
-      //si le noeud n'a pas été trouver donc n'existe pas alors on le créé
-      if(j==(int)root._enfant.size() && ( root._enfant.at(j)._x !=v.at(0).first && root._enfant.at(j)._y != v.at(0).second) ){
-        Node n;
-        n._x=v.at(0).first;
-        n._y=v.at(0).second;
-        n._nbcoups=root._enfant.at(0)._nbcoups;
-        if(root._j==courant::premier)
-            n._j=courant::deuxième;
-        else
-            n._j=courant::premier;
-        n._score=r;
-        n._nbsim++;
-        //pas besoin de continuer car on crée un nouveau noeud par update
-      }
-      else {
-        root._enfant.at(j)._nbsim++;
-        root._enfant.at(j)._score += r;
-
-        v.erase(v.begin());
-
-        //rapelle de la fonction pour la continuer la descente de l'arbre
-        updatev2(v, root._enfant.at(j), r);
-      }
+        else {
+            Node n;
+            n._x=v.at(0).first;
+            n._y=v.at(0).second;
+            n._nbcoups=root._nbcoups-1;
+            if(root._j==courant::premier)
+                n._j=courant::deuxième;
+            else
+                n._j=courant::premier;
+            n._score=r;
+            n._nbsim++;
+            root.ajouter_enfant(n);
+        }
     }
+    root._nbsim++;
+    root._score+=r;
+
 }
