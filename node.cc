@@ -43,7 +43,7 @@ Node Node::meilleur_enfant()
 float Node::qubc(const Node &n) {
    return _score+sqrt(2*log(_nbsim)/n._nbsim);//Il faudra traiter le cas où le total de simulations et le nombre de sim du noeud courant sont nuls
     }
-void *Node::fusionnerArbres(Node const & arbre1, Node const & arbre2,Node & resultat)
+void Node::fusionnerArbres(Node const & arbre1, Node const & arbre2,Node & resultat)
 {
     if (arbre1._enfant.empty()){
         resultat = arbre2;// si l'un des arbres est vide, il n'y a rien à faire
