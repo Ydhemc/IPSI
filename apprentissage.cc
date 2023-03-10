@@ -118,7 +118,7 @@ Node apprentissage::challenge()
             updatev2(resultat.second, _n,  apprentissage::resultat(resultat.first));
 
             //lancement d'une nouvelle partie
-            std::this_thread::sleep_for (std::chrono::milliseconds(2500)); // temps de latence entre deux parties
+            std::this_thread::sleep_for (std::chrono::milliseconds(500)); // temps de latence entre deux parties
             _numero_partie++;
             initialisation();
 
@@ -250,7 +250,7 @@ void apprentissage::updatev2(std::vector<couple> v, Node &root, int r)
     if(!v.empty()){
     //cherche la branche qui à été visité
         if(!root._enfant.empty()){
-              while ((j<(int)root._enfant.size()) && (root._enfant.at(j)._x !=v.at(0).first && root._enfant.at(j)._y != v.at(0).second)){
+              while ((j<(int)root._enfant.size()) && !(root._enfant.at(j)._x ==v.at(0).first && root._enfant.at(j)._y == v.at(0).second)){
                 ++j;
                 }
               //si le noeud n'a pas été trouver donc n'existe pas alors on le créé
