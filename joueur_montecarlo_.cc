@@ -5,7 +5,7 @@ Joueur_MonteCarlo_::Joueur_MonteCarlo_(std::string nom, bool joueur)
     :Joueur(nom,joueur), _j(Jeu(11))
 {
     save s;
-    _Root=s.import("arbre.txt");
+    _Root=s.import("testarbre.txt");
     _deroule=_Root;
 }
 
@@ -67,22 +67,19 @@ void Joueur_MonteCarlo_::recherche_coup(Jeu j, couple &coup)
             bool test(true);
             //on cherche si le coups est dans le vector enfant
             while(i<c.size() && test){
-                bool test2(false);
                for(std::vector<Node>::const_iterator x(_deroule._enfant.begin()); x!=_deroule._enfant.end(); ++x){
-                    if(x->_x==c.at(i).first ||  x->_y==c.at(i).second){
-                        test2=true;
+                    if(!(x->_x==c.at(i).first ||  x->_y==c.at(i).second)){
+                        test=false;
                     }
                }
-               //si pas trouver alors le coups n'a pas encore été chercher
-               //donc on sort du while
-               if(!test2) test=false;
-               else //autrement (si trouver) on incremente, pour passer à la valeur suivante
+               if(test)
                    i++;
             }
             coup.first=c.at(i).first;
             coup.second=c.at(i).second;
-            //var temp pour deroulé par la suite la fonction aleatoire (on crée un feuille pour evité de rentré dans le if)
             Node N;
+            N._x=c.at(i).first;
+            N._y=c.at(i).second;
             N._nbcoups=j.coups_possibles().size();
             _deroule=N;
         }
@@ -91,7 +88,7 @@ void Joueur_MonteCarlo_::recherche_coup(Jeu j, couple &coup)
             int M=_deroule.meilleur_coup();
             coup.first=_deroule._enfant.at(M)._x;
             coup.second=_deroule._enfant.at(M)._y;
-            //on se place maintenant sur notre derniers coups, la prochaine recherche de coups
+            //on se place maintenant sur notre derniers coups, pour la prochaine recherche de coups
             _deroule=_deroule._enfant.at(M);
         }
     }
@@ -161,7 +158,7 @@ void Joueur_MonteCarlo_::recherche_coup(Jeu j, couple &coup)
 
 
 //fonction selection: sélectionne le prochain nœud à explorer en parcourant l'arbre en fonction du QUBC jusqu'à atteindre un nœud feuille.
-
+/*
 Node Joueur_MonteCarlo_::selection(Node n) const
 {
     while (!n.est_terminal()) {
@@ -173,4 +170,4 @@ Node Joueur_MonteCarlo_::selection(Node n) const
         }
         return n;
 }
-
+*/
