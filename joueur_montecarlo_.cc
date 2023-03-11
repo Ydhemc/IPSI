@@ -5,7 +5,7 @@ Joueur_MonteCarlo_::Joueur_MonteCarlo_(std::string nom, bool joueur)
     :Joueur(nom,joueur), _j(Jeu(11))
 {
     save s;
-    _Root=s.import("testarbre.txt");
+    _Root=s.import("arbre.txt");
     _deroule=_Root;
 }
 
