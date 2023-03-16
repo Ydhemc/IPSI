@@ -1,0 +1,29 @@
+ 
+! le fichier "joueurs/Arbre/arbre.txt" doit être déplacer dans le build pour qu'il puisse être lu, par le programme (ne sachant pas si les noms de dossiers seront les mêmes, on a préféré ne pas modifier le chemin d'accès par défaut).
+
+Notre recherchecoups de la classe "joueur_montecarlo_" (lancer avec arbitre (10milliseconde) -> avec 50 il n'y a plus de problème de mutex) est trop lent avec environ 60 000 simulation et ne rend pas toujours de coups. C'est pour ça qu'on propose par defaut, un arbre avec un nombre de simulation inferieur.
+
+
+Arborescence:
+
+- joueurs/
+    * README
+    * CMakeLists.txt
+    * joueur_montecarlo_.cc ->avec notre recherche coups
+    * joueur_montecarlo_.hh
+    - ProjetMehdy-Oumar-Lyna/
+        * node.cc
+        * node.hh
+        * save.cc
+        * save.hh
+        * apprentissage.hh
+        * apprentissage.cc
+        - Arbre/ -> nos different arbre
+            * arbre.txt -> le fichier à placer dans le build pour l'excecution
+            - /Autre
+                * d'autre version d'arbre
+                * exarbre.txt -> fichier d'un arbre avec des commentaires pour visualiser
+                * exarbre.png -> image qui illustre l'arbre exarbre.txt
+            - main/
+                * mainTestSave.cpp -> Pour tester la classe save et ses fonctions
+                * nos main d'apprentissage -> Pour faire apprendre notre monte carlo
