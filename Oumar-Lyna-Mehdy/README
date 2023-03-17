@@ -1,7 +1,7 @@
  
-! le fichier "joueurs/Arbre/arbre.txt" doit être déplacer dans le build pour qu'il puisse être lu, par le programme (ne sachant pas si les noms de dossiers seront les mêmes, on a préféré ne pas modifier le chemin d'accès par défaut).
+! le fichier "joueurs/Arbre/arbre.txt" doit être déplacé dans le build pour qu'il puisse être lu, par le programme (ne sachant pas si les noms de dossiers seront les mêmes, on a préféré ne pas modifier le chemin d'accès par défaut).
 
-Notre recherchecoups de la classe "joueur_montecarlo_" (lancer avec arbitre (10milliseconde) -> avec 50 il n'y a plus de problème de mutex) est trop lent avec environ 60 000 simulation et ne rend pas toujours de coups. C'est pour ça qu'on propose par defaut, un arbre avec un nombre de simulation inferieur.
+Notre recherchecoups de la classe "joueur_montecarlo_" (lancer avec arbitre (10milliseconde) -> avec 50 il n'y a plus de problème de mutex) est trop lent avec environ 60 000 simulations et ne rend pas toujours de coups. C'est pour ça qu'on propose par defaut, un arbre avec un nombre de simulations inférieur.
 
 
 Arborescence:
@@ -18,10 +18,10 @@ Arborescence:
         * save.hh
         * apprentissage.hh
         * apprentissage.cc
-        - Arbre/ -> nos different arbre
+        - Arbre/ -> nos différents arbres
             * arbre.txt -> le fichier à placer dans le build pour l'excecution
             - /Autre
-                * d'autre version d'arbre
+                * d'autres versions d'arbre
                 * exarbre.txt -> fichier d'un arbre avec des commentaires pour visualiser
                 * exarbre.png -> image qui illustre l'arbre exarbre.txt
             - main/
